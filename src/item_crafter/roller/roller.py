@@ -66,7 +66,7 @@ class Roller:
     def _move_to(self, x_coordinate: int, y_coordinate: int, dispersion: int = 0) -> None:
         x_coordinate += randint(-dispersion, dispersion)
         y_coordinate += randint(-dispersion, dispersion)
-        random_duration = self._get_random_duration()  # Чтобы значения всегда были разными. # FIXME
+        random_duration = self._get_random_duration()  # Чтобы значения всегда были разными.
         pag.moveTo(x_coordinate, y_coordinate, duration=random_duration)
 
     def _get_random_duration(self) -> float:
