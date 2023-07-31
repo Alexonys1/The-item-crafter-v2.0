@@ -3,7 +3,7 @@ import keyboard
 import pyautogui as pag
 
 from random import randint, uniform
-from typing import NoReturn
+from typing import NoReturn, Any
 
 from src.item_crafter.data_classes.models import ProgramData
 from src.item_crafter.data_classes.item_search_modes import ItemSearchModes
@@ -101,10 +101,16 @@ class Roller:
         time.sleep(0.2)
 
     def _run_roll_loop(self) -> None | NoReturn:
+        self._is_first_click = True
         while self._whether_to_roll:
 
             if self._need_to_clean_items_after_roll:
+                self._release_shift()
+                self._press_left_mouse_button_if_first_click()
                 self._clean_item_using_orb_of_scouring()
+                self._move_to_resource_collection_point()
+                self._press_right_mouse_button()
+                self._move_to_craft_region()
 
             if self._match_checker.number_of_matches >= 3:
                 # Если текст повторяется, значит нет ресурсов для крафта
@@ -168,6 +174,11 @@ class Roller:
         y_coordinate = orbs_of_scouring.y.get()
         dispersion = orbs_of_scouring.dispersion.get()
         self._move_to(x_coordinate, y_coordinate, dispersion)
+
+    def _press_left_mouse_button_if_first_click(self):
+        if self._is_first_click:
+            self._is_first_click = False
+            self._press_left_mouse_button()
 
     def _random_micro_sleep(self) -> None:
         random_seconds = uniform(0.1, 0.2)

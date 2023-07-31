@@ -24,6 +24,7 @@ def _make_black_and_white_screenshot(screenshot: Image) -> Image:
 if __name__ == "__main__":
     button_name = "F2"
     print(f"Нажми \"{button_name}\" для прочтения текста со всего экрана.", end="\n\n")
+    pytesseract.pytesseract.tesseract_cmd = "..\\..\\..\\Tesseract-OCR\\tesseract.exe"
     while True:
         wait(button_name)
         print(get_text_from_screenshot())
