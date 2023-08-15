@@ -1,6 +1,6 @@
 import keyboard
 
-from tkinter import StringVar, Tk
+from tkinter import IntVar, StringVar, Tk
 from difflib import SequenceMatcher
 
 from src.item_crafter.roller.screenshot_to_text import get_text_from_screenshot
@@ -11,10 +11,11 @@ class PropertyHandler:
     Класс для обработки свойств предметов POE.
     """
 
-    def __init__(self, text_with_pattern_properties: StringVar):
+    def __init__(self, text_with_pattern_properties: StringVar, property_match_percentage: IntVar):
         self._raise_type_error_if_text_with_pattern_properties_is_not_str(
             text=text_with_pattern_properties)
         self._text_with_pattern_properties = text_with_pattern_properties
+        self._property_match_percentage = property_match_percentage
 
     def _raise_type_error_if_text_with_pattern_properties_is_not_str(self, text: StringVar) -> None:
         if not isinstance(text, StringVar):
@@ -61,7 +62,7 @@ class PropertyHandler:
     @property
     def _match_percentage(self) -> int:
         """Получить минимальный процент сходства свойств."""
-        return 86
+        return self._property_match_percentage.get()
 
     def set_properties(self, text: str) -> None:
         """Сохранитьить свойства в классе для дальнейшей обработки."""

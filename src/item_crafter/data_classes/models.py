@@ -34,6 +34,7 @@ class Main(TkinterDataclass):
     item_search_mode: StringVar
     clean_item_after_failed_roll: BooleanVar
     text_of_textinput: StringVar
+    property_match: IntVar
 
 
 class Notebook(TkinterDataclass):

@@ -13,18 +13,33 @@ class MainFrame:
     def __init__(self, master: Tk | Frame | LabelFrame | ttk.Notebook):
         self._root = ttk.Frame(master)
         self._program_data = ProgramData()  # Потребуются все данные программы.
+        self._create_left_frame()
+        self._create_right_frame()
+
+    def _create_left_frame(self) -> None:
+        self._left_frame = Frame(self._root)
+        self._left_frame.grid(row=0, column=0, pady=5, sticky=N+E+S+W)
+
         self._create_textinput_frame()
-        self._create_setting_frame()
         self._create_textinput()
+
+        self._create_frame_of_property_match_scale()
+        self._create_property_match_scale()
+
+    def _create_right_frame(self) -> None:
+        self._right_frame = Frame(self._root)
+        self._right_frame.grid(row=0, column=1, pady=5, sticky=N+E+S+W)
+
+        self._create_setting_frame()
         self._create_widgets_in_setting_frame()
 
     def _create_textinput_frame(self) -> None:
-        self._textinput_frame = LabelFrame(self._root,
+        self._textinput_frame = LabelFrame(self._left_frame,
                                            text="Ввод свойств для поиска:")
-        self._textinput_frame.grid(row=0, column=0, pady=5, sticky=N+E+S+W)
+        self._textinput_frame.grid(row=0, column=0, pady=5)
 
     def _create_setting_frame(self) -> None:
-        self._setting_frame = LabelFrame(self._root,
+        self._setting_frame = LabelFrame(self._right_frame,
                                          text="Настройка крафта:")
         self._setting_frame.grid(row=0, column=1, pady=5, sticky=N+E+S+W)
 
@@ -32,7 +47,7 @@ class MainFrame:
         self._textinput = ScrolledText(self._textinput_frame,
                                         relief=SUNKEN,
                                         width=20,
-                                        height=16,
+                                        height=12,
                                         padx=5,
                                         bd=3,
                                         font=("Arial", 10, ""),
@@ -54,9 +69,29 @@ class MainFrame:
         return self._textinput.get(ZERO_SYMBOL_OF_FIRST_STRING,
                                    END_OF_TEXT_WIDGET_OF_TKINTER)
 
+    def _create_frame_of_property_match_scale(self) -> None:
+        self._frame_of_property_match_scale = LabelFrame(
+            self._left_frame,
+            text="Процент совпадения"
+        )
+        self._frame_of_property_match_scale.grid(row=1, column=0)
+
+    def _create_property_match_scale(self) -> None:
+        self._property_match_scale = Scale(
+            self._frame_of_property_match_scale,
+            variable=self._program_data.main_frame.property_match,
+            orient=HORIZONTAL,
+            from_=0, to=100,
+            tickinterval=20,
+            resolution=1,
+            length=160,
+            fg="darkred"
+        )
+        self._property_match_scale.grid(row=0, column=0)
+
     def _create_widgets_in_setting_frame(self) -> None:
         self._create_radiobuttons_for_choosing_item_search_modes()
-        self._create_updatable_labes()
+        self._create_updatable_labels()
         self._start_reset_updatable_labels()
         self._create_checkbutton_for_clean_up_after_failed_roll()
         self._create_save_and_load_buttons()
@@ -75,7 +110,7 @@ class MainFrame:
                     value=ItemSearchModes.AT_LEAST_ONE.value
                     ).grid(row=1, column=0, sticky=W)
 
-    def _create_updatable_labes(self) -> None:
+    def _create_updatable_labels(self) -> None:
         self._label_showing_current_resolution = Label(self._setting_frame,
                                                            text=f"Текущее разрешение экрана:\n{self._f_current_resolution}.",
                                                            fg="darkblue")

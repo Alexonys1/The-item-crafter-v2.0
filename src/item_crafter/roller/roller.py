@@ -22,7 +22,9 @@ class Roller:
         self._program_data = ProgramData()  # Нужны все данные программы.
         self._match_checker = MatchChecker()
         self._property_handler = PropertyHandler(
-            text_with_pattern_properties=self._program_data.main_frame.text_of_textinput)
+            text_with_pattern_properties=self._program_data.main_frame.text_of_textinput,
+            property_match_percentage=self._program_data.main_frame.property_match
+        )
 
     def run_roll(self) -> None:
         try:
