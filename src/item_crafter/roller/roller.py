@@ -16,7 +16,7 @@ from src.item_crafter.roller.match_checker import MatchChecker
 
 
 class Roller:
-    """Класс для ролла свойств: для крафта предметов."""
+    """Класс для ролла свойств, то есть для крафта предметов."""
 
     def __init__(self):
         self._program_data = ProgramData()  # Нужны все данные программы.
@@ -38,7 +38,7 @@ class Roller:
         except ResourcesHaveRunOut:
             play_sound_meaning_that_system_has_failed()
 
-        except pag.FailSafeException: # Если навести мышку в любой угол экрана, то поднимется это исключение.
+        except pag.FailSafeException:  # Если навести мышку в любой угол экрана, то поднимется это исключение.
             keyboard.release("shift")  # pag.keyUp поднимет не shift, а pag.FailSafeException.
             print("Пользователь сам остановил программу.", end="\n\n\n")
 

@@ -1,11 +1,12 @@
 import pyautogui as pag
 import pytesseract
 
-pytesseract.pytesseract.tesseract_cmd = "..\\..\\Tesseract-OCR\\tesseract.exe"
-
 from typing import Optional
 from PIL import Image
 from keyboard import wait
+
+
+pytesseract.pytesseract.tesseract_cmd = "..\\..\\Tesseract-OCR\\tesseract.exe"
 
 
 def get_text_from_screenshot(region: Optional[tuple[int, int, int, int]] = None) -> str:
@@ -16,7 +17,7 @@ def get_text_from_screenshot(region: Optional[tuple[int, int, int, int]] = None)
 
 
 def _make_black_and_white_screenshot(screenshot: Image) -> Image:
-    thresh = 70  # До какого значения всё делать белым.
+    thresh = 80  # До какого значения всё делать белым.
     la = lambda x: 255 if x > thresh else 0
     return screenshot.convert('L').point(la, mode='1')
 

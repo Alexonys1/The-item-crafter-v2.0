@@ -41,7 +41,7 @@ class PropertyHandler:
                 # Если это нужное свойство:
                 if value_of_current_property is not None:  # Если программа не находит в свойстве числовые значения,
                                                            # то она ставит None, которое нужно проверять.
-                    print (pattern_property, current_property, self._similar (pattern_property, current_property), sep = '; ')
+                    print(pattern_property, current_property, value_of_current_property, "->", self._similar(pattern_property, current_property), sep='; ')
                     if self._similar(pattern_property, current_property) >= self._match_percentage:
                         if value_of_current_property >= value_of_pattern_property:  # По решению Димы.
                             return True  # Если есть хотя бы одно.
@@ -127,7 +127,7 @@ if __name__ == "__main__":
         text_input = input("Введи свойства, которые нужно искать через запиточку: ")
         user_properties = StringVar(value=text_input)
 
-        property_handler = PropertyHandler(user_properties)
+        property_handler = PropertyHandler(user_properties, IntVar(value=84))
 
         print(f"Нажми {button_name}, чтобы сделать скриншот.")
         keyboard.wait(button_name)
