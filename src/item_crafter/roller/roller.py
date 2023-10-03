@@ -2,6 +2,7 @@ import time
 import keyboard
 import pyautogui as pag
 
+from loguru import logger
 from random import randint, uniform
 from typing import NoReturn, Any
 
@@ -27,6 +28,7 @@ class Roller:
         )
 
     def run_roll(self) -> None:
+        logger.info("Начало ролла.")
         try:
             self._open_poe()
             self._move_to_resource_collection_point()
@@ -39,20 +41,22 @@ class Roller:
             play_sound_meaning_that_system_has_failed()
 
         except pag.FailSafeException:  # Если навести мышку в любой угол экрана, то поднимется это исключение.
-            keyboard.release("shift")  # pag.keyUp поднимет не shift, а pag.FailSafeException.
-            print("Пользователь сам остановил программу.", end="\n\n\n")
+            self._release_shift()
+            logger.info("Пользователь сам остановил программу.")
 
         else:
             play_sound_meaning_that_property_has_been_found()
 
         finally:
             self._release_shift()
+            logger.info("Окончание ролла.")
 
 
     def _open_poe(self) -> None:
         poe_finder = POEFinder()
         poe_finder.open_poe()
         time.sleep(0.4)  # Задержка, чтобы POE успело открыться.
+        logger.debug("POE открыто (если оно есть).")
 
     def _move_to_resource_collection_point(self) -> None:
         resources = self._program_data.resources
@@ -64,6 +68,7 @@ class Roller:
         y_coordinate += randint(-dispersion, dispersion)
 
         self._move_to(x_coordinate, y_coordinate)
+        logger.debug("Курсор переведён на место крафта.")
 
     def _move_to(self, x_coordinate: int, y_coordinate: int, dispersion: int = 0) -> None:
         x_coordinate += randint(-dispersion, dispersion)
@@ -79,15 +84,19 @@ class Roller:
     # потенциально опасное исключение pag.FailSafeException.
     def _press_shift(self) -> None:
         keyboard.press("shift")
+        logger.debug("Зажат shift.")
 
     def _release_shift(self) -> None:
         keyboard.release("shift")
+        logger.debug("Отжат shift.")
 
     def _press_right_mouse_button(self) -> None:
         pag.click(button="right")
+        logger.debug("Нажата правая кнопка мыши.")
 
     def _press_left_mouse_button(self) -> None:
         pag.click(button="left")
+        logger.debug("Нажата левая кнопка мыши.")
 
     def _move_to_craft_region(self) -> None:
         craft_region = self._program_data.craft_region
@@ -100,16 +109,19 @@ class Roller:
         random_y_of_craft_region = randint(y_of_left_top_corner, y_of_left_top_corner + height)
 
         self._move_to(random_x_of_craft_region, random_y_of_craft_region)
+        logger.debug("Курсор переведён на место крафта. " +\
+                     f"Координаты: ({random_x_of_craft_region}; {random_y_of_craft_region}).")
         time.sleep(0.2)
 
     def _run_roll_loop(self) -> None | NoReturn:
         self._is_first_click = True
         while self._whether_to_roll:
-
+            logger.debug("Можно крафтить.")
             if self._need_to_clean_items_after_roll:
                 self._release_shift()
                 self._press_left_mouse_button_if_first_click()
                 self._clean_item_using_orb_of_scouring()
+                logger.debug("Предмет очищен.")
                 self._move_to_resource_collection_point()
                 self._press_right_mouse_button()
                 self._move_to_craft_region()
@@ -117,6 +129,7 @@ class Roller:
             if self._match_checker.number_of_matches >= 3:
                 # Если текст повторяется, значит нет ресурсов для крафта
                 # или просто очень-очень повезло.
+                logger.warning("Закончились ресурсы!")
                 raise ResourcesHaveRunOut("Закончились ресурсы!")
 
             else:
@@ -185,3 +198,4 @@ class Roller:
     def _random_micro_sleep(self) -> None:
         random_seconds = uniform(0.1, 0.2)
         time.sleep(random_seconds)
+        logger.debug(f"Random micro sleep: {round(random_seconds, 3)}.")

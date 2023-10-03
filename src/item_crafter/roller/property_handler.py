@@ -1,5 +1,6 @@
 import keyboard
 
+from loguru import logger
 from tkinter import IntVar, StringVar, Tk
 from difflib import SequenceMatcher
 
@@ -41,8 +42,9 @@ class PropertyHandler:
                 # Если это нужное свойство:
                 if value_of_current_property is not None:  # Если программа не находит в свойстве числовые значения,
                                                            # то она ставит None, которое нужно проверять.
-                    print(pattern_property, current_property, value_of_current_property, "->", self._similar(pattern_property, current_property), sep='; ')
-                    if self._similar(pattern_property, current_property) >= self._match_percentage:
+                    similar = self._similar(pattern_property, current_property)
+                    logger.info(f"[{pattern_property} ({value_of_pattern_property})] [{current_property} ({value_of_current_property})] -> {similar}%")
+                    if similar >= self._match_percentage:
                         if value_of_current_property >= value_of_pattern_property:  # По решению Димы.
                             return True  # Если есть хотя бы одно.
         return False  # Если ничего не совпало.

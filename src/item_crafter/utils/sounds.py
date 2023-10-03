@@ -4,11 +4,9 @@ from playsound import playsound
 
 
 def play_sound_meaning_that_system_has_failed() -> None:
-    print("Ресурсы закончились!")
     playsound(_file_name_of_sound_meaning_that_system_has_failed())
 
 def play_sound_meaning_that_property_has_been_found() -> None:
-    print("Крафт окончен!", end="\n\n\n")
     playsound(_file_name_of_sound_meaning_that_property_has_been_found())
 
 

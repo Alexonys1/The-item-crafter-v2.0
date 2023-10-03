@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "the-item-crafter-v2-0"
+version = "0.1.0"
+description = "No description..."
+authors = ["Alexonys <leha.bondar.05@mail.ru>"]
+readme = "README.md"
+packages = [{include = "the_item_crafter_v2"}]
+
+
+[tool.poetry.dependencies]
+python = "^3.11"
+loguru = "^0.7.2"
+playsound = "1.2.2"
+keyboard = "^0.13.5"
+pyautogui = "^0.9.54"
+pytesseract = "^0.3.10"
+opencv-python = "^4.8.1.78"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

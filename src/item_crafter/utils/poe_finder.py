@@ -2,6 +2,7 @@ import time
 
 import pyautogui as pag
 
+from loguru import logger
 from typing import Any
 from random import uniform
 from keyboard import wait
@@ -20,7 +21,9 @@ class POEFinder(Singleton):
         """Обновляет self._poe_coordinates в классе."""
         def wrapper(self, *args, **kwargs) -> Any:
             # self._poe_coordinates: None | tuple[int, int, int, int]
-            self._poe_coordinates = pag.locateOnScreen(image=self._name_of_poe_image, confidence=0.9)
+            self._poe_coordinates = pag.locateOnScreen(image=self._name_of_poe_image, confidence=0.7)
+            if self._poe_coordinates is None:
+                logger.warning("POE не видно на экране!")
             return function(self, *args, **kwargs)
 
         return wrapper
