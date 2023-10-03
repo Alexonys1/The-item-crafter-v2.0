@@ -28,7 +28,7 @@ class Roller:
         )
 
     def run_roll(self) -> None:
-        logger.info("Начало ролла.")
+        logger.info("Начало ролла!")
         try:
             self._open_poe()
             self._move_to_resource_collection_point()

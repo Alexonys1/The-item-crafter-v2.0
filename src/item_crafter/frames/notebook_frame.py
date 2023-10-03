@@ -1,3 +1,4 @@
+from loguru import logger
 from tkinter import *
 from tkinter import ttk
 from tkinter.scrolledtext import ScrolledText
@@ -27,7 +28,7 @@ class NotebookFrame:
     def update_text_in_textinput(self) -> None:
         self._textinput.delete("1.0", END)
         self._textinput.insert(INSERT, self._notebook.text.get())
-        print("Notebook:", self._notebook.text.get())
+        logger.info(f"Содержимое блокнота: {self._notebook.text.get()}")
 
     def _start_update_text_of_textinput_in_data(self) -> None:
         self._root.after(1000, self._start_update_text_of_textinput_in_data)

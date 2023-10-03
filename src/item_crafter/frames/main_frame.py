@@ -1,6 +1,8 @@
 from tkinter import *
 from tkinter import ttk
 from tkinter.scrolledtext import ScrolledText
+
+from loguru import logger
 from pyautogui import size
 
 from src.item_crafter.data_classes.models import ProgramData
@@ -53,7 +55,7 @@ class MainFrame:
                                         font=("Arial", 10, ""),
                                         wrap=WORD)
         self._textinput.insert(INSERT, self._program_data.main_frame.text_of_textinput.get())
-        print("Textinput:", self._program_data.main_frame.text_of_textinput.get())
+        logger.info(f"Сохранённые свойства: {self._program_data.main_frame.text_of_textinput.get()}")
         self._start_update_textinput_in_data()
         self._textinput.grid(row=0, column=0, padx=4)
 
@@ -165,9 +167,9 @@ class MainFrame:
         else:
             self._textinput.delete("1.0", END)
             self._textinput.insert(INSERT, self._program_data.main_frame.text_of_textinput.get())
+            logger.info(f"Загруженные свойства: {self._program_data.main_frame.text_of_textinput.get()}")
 
     def _start_craft(self) -> None:
-        print("СТАРТ ПРОГРАММЫ!")
         roller = Roller()
         roller.run_roll()
 
